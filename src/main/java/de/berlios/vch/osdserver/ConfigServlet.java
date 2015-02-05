@@ -49,7 +49,7 @@ public class ConfigServlet extends VchHttpServlet {
 
     private BundleContext ctx;
 
-    private ServiceRegistration menuReg;
+    private ServiceRegistration<IWebMenuEntry> menuReg;
 
     public ConfigServlet() {
     }
@@ -70,8 +70,7 @@ public class ConfigServlet extends VchHttpServlet {
         }
 
         params.put("TITLE", rbp.getResourceBundle().getString("I18N_OSDSERVER_CONFIG"));
-        params.put("SERVLET_URI",
-                req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getServletPath());
+        params.put("SERVLET_URI", req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getServletPath());
         params.put("ACTION", PATH);
         params.put("osdserver_host", prefs.get("osdserver.host", "localhost"));
         params.put("osdserver_port", prefs.get("osdserver.port", "2010"));
@@ -107,7 +106,7 @@ public class ConfigServlet extends VchHttpServlet {
         entry.setLinkUri(ConfigServlet.PATH);
         childs.add(entry);
         menu.setChilds(childs);
-        menuReg = ctx.registerService(IWebMenuEntry.class.getName(), menu, null);
+        menuReg = ctx.registerService(IWebMenuEntry.class, menu, null);
 
     }
 
