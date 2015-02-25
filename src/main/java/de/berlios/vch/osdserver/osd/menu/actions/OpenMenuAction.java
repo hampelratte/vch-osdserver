@@ -48,6 +48,16 @@ public class OpenMenuAction implements IOsdAction {
             osd.appendToFocus(siteMenu);
             osd.showMessage(new OsdMessage("", OsdMessage.STATUSCLEAR));
             osd.show(siteMenu);
+        } catch (RuntimeException e) {
+            Osd osd = session.getOsd();
+            try {
+                osd.showMessageSilent(new OsdMessage("", OsdMessage.STATUSCLEAR));
+                osd.showMessage(new OsdMessage(e.getLocalizedMessage(), OsdMessage.ERROR, 3));
+                logger.error("Couldn't create osd menu", e);
+            } catch (Exception e1) {
+                logger.error("Couldn't show error on OSD", e1);
+                logger.error("Original error", e);
+            }
         } catch (Exception e) {
             logger.error("Couldn't create osd menu", e);
         }
